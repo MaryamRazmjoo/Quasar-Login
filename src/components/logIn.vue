@@ -8,42 +8,27 @@
           <q-input
             class="q-mb-md"
             bottom-slots
-            v-model="text"
+            v-model="enteredData.phone"
             placeholder="شماره همراه"
-            counter
           >
-            <template v-slot:append>
-              <q-icon name="close" @click="text = ''" class="cursor-pointer"/>
-            </template>
-
-            <template v-slot:hint>
-              Field hint
-            </template>
           </q-input>
           <q-input
             class="q-mb-md"
             type="password"
             bottom-slots
-            v-model="text"
+            v-model="enteredData.password"
             placeholder="رمز ورود"
-            counter
           >
-            <template v-slot:append>
-              <q-icon name="close" @click="text = ''" class="cursor-pointer"/>
-            </template>
-
-            <template v-slot:hint>
-              Field hint
-            </template>
           </q-input>
         </q-form>
       </q-card-section>
       <q-card-actions>
         <q-btn
-          class="full-width"
+          class="full-width q-mb-md"
           color="yellow"
           text-color="black"
           label="ورود"
+          @click="logIn"
         />
       </q-card-actions>
     </q-card>
@@ -51,8 +36,32 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  name: 'logIn'
+  name: 'logIn',
+  data () {
+    return {
+      enteredData: {
+        phone: null,
+        password: null
+      }
+    }
+  },
+  methods: {
+    logIn () {
+      axios.post('alaatv.com/api/v2/login', {
+        mobile: this.enteredData.phone,
+        password: this.enteredData.nationalCode
+      })
+        .then(response => {
+          console.log('res: ', response)
+        })
+        .catch(error => {
+          console.log('err: ', error)
+        })
+    }
+  }
 }
 </script>
 

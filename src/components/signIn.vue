@@ -8,50 +8,58 @@
           <q-input
             class="q-mb-md"
             bottom-slots
-            v-model="text"
             placeholder="شماره همراه"
-            counter
+            v-model="enteredData.phone"
           >
-            <template v-slot:append>
-              <q-icon name="close" @click="text = ''" class="cursor-pointer"/>
-            </template>
-
-            <template v-slot:hint>
-              Field hint
-            </template>
           </q-input>
           <q-input
             class="q-mb-md"
             bottom-slots
-            v-model="text"
             placeholder="کدملی"
-            counter
+            v-model="enteredData.nationalCode"
           >
-            <template v-slot:append>
-              <q-icon name="close" @click="text = ''" class="cursor-pointer"/>
-            </template>
-
-            <template v-slot:hint>
-              Field hint
-            </template>
           </q-input>
         </q-form>
       </q-card-section>
       <q-card-actions>
         <q-btn
-          class="full-width"
+          class="full-width q-mb-md"
           color="yellow"
           text-color="black"
           label="ثبت نام"
+          @click="signIn"
         />
       </q-card-actions>
     </q-card>
   </div>
 </template>
-
 <script>
+import axios from 'axios'
+
 export default {
-  name: 'signIn'
+  name: 'signIn',
+  data () {
+    return {
+      enteredData: {
+        phone: null,
+        nationalCode: null
+      }
+    }
+  },
+  methods: {
+    signIn () {
+      axios.post('alaatv.com/api/v2/login', {
+        mobile: this.enteredData.phone,
+        password: this.enteredData.nationalCode
+      })
+        .then(response => {
+          console.log('res: ', response)
+        })
+        .catch(error => {
+          console.log('err: ', error)
+        })
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
